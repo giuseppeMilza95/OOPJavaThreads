@@ -24,11 +24,11 @@ public class App
 
         //9B
 
-        System.out.println("\n*********************Task 9A*********************");
-        Thread scorpionThread = new Thread(new Scorpion("\u001B[31m"));
-        Thread subZeroThread = new Thread(new SubZero("\u001B[32m"));
-        scorpionThread.start();
-        subZeroThread.start();
+//        System.out.println("\n*********************Task 9A*********************");
+//        Thread scorpionThread = new Thread(new Scorpion("\u001B[31m"));
+//        Thread subZeroThread = new Thread(new SubZero("\u001B[32m"));
+//        scorpionThread.start();
+//        subZeroThread.start();
 
 
     }
