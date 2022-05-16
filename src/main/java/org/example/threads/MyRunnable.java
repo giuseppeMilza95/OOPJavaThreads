@@ -2,10 +2,13 @@ package org.example.threads;
 
 public class MyRunnable implements Runnable {
     private final String ANSI_COLOR;
+    public Finisher finisher;
 
     public MyRunnable(String ANSI_RED) {
         this.ANSI_COLOR = ANSI_RED;
     }
+
+
 
     @Override
     public void run() {
@@ -17,6 +20,8 @@ public class MyRunnable implements Runnable {
                 throw new RuntimeException(e);
             }
         }
+
+        finisher.finishHim();
     }
 
 }
