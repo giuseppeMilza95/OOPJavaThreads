@@ -2,13 +2,18 @@ package org.example;
 
 
 import org.example.threads.Finisher;
+import org.example.threads.MyCallable;
 import org.example.threads.MyRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Hello world!
  */
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // 9A
 
 //        System.out.println("*********************Task 9A*********************\n");
@@ -27,7 +32,6 @@ public class App {
 //        subZeroThread.start();
 
         //9C
-
 
 
         MyRunnable scorpionFinisher = new MyRunnable("\u001B[31m") {
@@ -74,8 +78,6 @@ public class App {
         subZeroThread.start();
 
 
-
-
         // Task 9D
 
         //First way
@@ -93,8 +95,6 @@ public class App {
         };
 
 
-
-
         Thread thread = new Thread(scorpionAnonymous);
         Thread thread1 = new Thread(subZeroAnonymous);
         thread.start();
@@ -107,14 +107,14 @@ public class App {
 
         Finisher subZeroFinisherLambda = () -> System.out.println("SubZero attacks Scorpion with Ice-Cutione");
 
-        MyRunnable scorpionFinisherRunnable = new MyRunnable("\u001B[31m"){
+        MyRunnable scorpionFinisherRunnable = new MyRunnable("\u001B[31m") {
             @Override
             public void run() {
                 scorpionFinisherLambda.finishHim();
             }
         };
 
-        MyRunnable subZeroFinisherRunnable = new MyRunnable("\u001B[32m"){
+        MyRunnable subZeroFinisherRunnable = new MyRunnable("\u001B[32m") {
             @Override
             public void run() {
                 subZeroFinisherLambda.finishHim();
@@ -122,16 +122,50 @@ public class App {
         };
 
 
-
-
         Thread threadScorpionLambda = new Thread(scorpionFinisherRunnable);
         Thread threadSubZeroLambda = new Thread(subZeroFinisherRunnable);
         threadScorpionLambda.start();
         threadSubZeroLambda.start();
 
+        // 9E
+
+        MyCallable myCallable = new MyCallable();
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<Double> futureDouble = executorService.submit(myCallable);
+        try {
+            System.out.println(futureDouble.get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        executorService.shutdown();
 
 
+        for (int i = 0; i < 10; i++) {
+            double randomNumber = myCallable.call();
+            if (randomNumber >= 0.5 && randomNumber <= 1.0) {
+                new Finisher() {
+                    @Override
+                    public void finishHim() {
+                        System.out.println("Scorpion Attacks SubZero with Chain Reaction");
+                    }
 
+                }.finishHim();
+            } else {
+                new Finisher() {
+                    @Override
+                    public void finishHim() {
+                        System.out.println("SubZero attacks Scorpion with Ice-Cutione");
+                    }
+                }.finishHim();
+
+
+            }
+
+
+        }
     }
 }
 
